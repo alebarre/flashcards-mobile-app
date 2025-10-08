@@ -1,14 +1,14 @@
-﻿# 📚 Flashcards Edu - App Educativo
+﻿#  Flashcards Edu - App Educativo
 
 Um aplicativo mobile educativo desenvolvido em React Native com Expo para aprendizado através de flashcards interativos.
 
-## 📱 Sobre o Projeto
+##  Sobre o Projeto
 
 O Flashcards Edu é um aplicativo mobile que permite aos usuários estudar através de flashcards organizados por categorias. Com interface intuitiva e sistema de progresso, o app torna o aprendizado mais dinâmico e eficiente.
 
 
 
-## 🏗️ Estrutura do Projeto
+##  Estrutura do Projeto
 
 - FlashcardsApp
 - ├── src/
@@ -35,7 +35,7 @@ O Flashcards Edu é um aplicativo mobile que permite aos usuários estudar atrav
 - ├── package.json
 - └── tsconfig.json
 
-## 🛠️ Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 
 ### **Frontend & Mobile**
 
@@ -55,7 +55,7 @@ O Flashcards Edu é um aplicativo mobile que permite aos usuários estudar atrav
 - ![npm](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)
 - ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 
-## 🚀 Funcionalidades
+##  Funcionalidades
 
 ### ** Sistema de Autenticação**
 
@@ -80,7 +80,7 @@ O Flashcards Edu é um aplicativo mobile que permite aos usuários estudar atrav
 -  Estatísticas detalhadas no perfil
 -  Visualização de dados de uso
 
-### **🎨 Experiência do Usuário**
+### ** Experiência do Usuário**
 
 -  Splash screen animada (3 segundos)
 -  Navegação fluida entre telas
@@ -106,6 +106,7 @@ git clone https://github.com/seu-usuario/flashcards-edu.git
 cd flashcards-edu
 npm install
 ```
+
 
 
 
