@@ -1,11 +1,19 @@
-import React, { createContext, useContext, useReducer, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  ReactNode,
+  useEffect,
+} from "react";
 import { AppState, User, Flashcard } from "../types";
+import { authService } from "../services/authService";
 
 type AppAction =
-  | { type: "SET_USER"; payload: User }
+  | { type: "SET_USER"; payload: User | null }
   | { type: "SET_FLASHCARDS"; payload: Flashcard[] }
   | { type: "SET_CATEGORY"; payload: string }
-  | { type: "LOGOUT" };
+  | { type: "LOGOUT" }
+  | { type: "SET_USERS"; payload: User[] };
 
 interface AppContextType {
   state: AppState;
@@ -14,14 +22,13 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-// Estado inicial
 const initialState: AppState = {
   user: null,
-  flashcards: [], // Começa com array vazio
+  flashcards: [],
   currentCategory: "all",
+  users: [],
 };
 
-// Reducer para gerenciar estado
 function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
     case "SET_USER":
@@ -30,21 +37,33 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, flashcards: action.payload || [] };
     case "SET_CATEGORY":
       return { ...state, currentCategory: action.payload };
+    case "SET_USERS":
+      return { ...state, users: action.payload };
     case "LOGOUT":
-      return {
-        ...state,
-        user: null,
-        flashcards: [],
-        currentCategory: "all",
-      };
+      return initialState;
     default:
       return state;
   }
 }
 
-// Provider do Context
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
+
+  // Verificar se usuário já está logado ao iniciar o app
+  useEffect(() => {
+    const checkLoggedInUser = async () => {
+      try {
+        const user = await authService.getCurrentUser();
+        if (user) {
+          dispatch({ type: "SET_USER", payload: user });
+        }
+      } catch (error) {
+        console.error("Erro ao verificar usuário logado:", error);
+      }
+    };
+
+    checkLoggedInUser();
+  }, []);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>
@@ -53,7 +72,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Hook personalizado para usar o Context
 export function useApp() {
   const context = useContext(AppContext);
   if (context === undefined) {

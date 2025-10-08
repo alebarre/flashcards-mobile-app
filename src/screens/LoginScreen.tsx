@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useApp } from "../context/AppContext";
-import { authService } from "../services/api";
+import { authService } from "../services/authService";
 import { RootStackParamList } from "../navigation/AppNavigator";
 
 type LoginScreenNavigationProp = StackNavigationProp<
@@ -38,13 +38,12 @@ export default function LoginScreen({ navigation }: Props) {
       const user = await authService.login(email, password);
       dispatch({ type: "SET_USER", payload: user });
 
-      // Resetar navegação para Home ser a única tela na pilha
       navigation.reset({
         index: 0,
         routes: [{ name: "Home" }],
       });
-    } catch (error) {
-      Alert.alert("Erro", "Falha no login. Tente novamente.");
+    } catch (error: any) {
+      Alert.alert("Erro", error.message || "Falha no login. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -52,7 +51,8 @@ export default function LoginScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Flashcards Educativos</Text>
+      <Text style={styles.title}>Flashcards Edu</Text>
+      <Text style={styles.subtitle}>Faça login para continuar</Text>
 
       <TextInput
         style={styles.input}
@@ -61,6 +61,7 @@ export default function LoginScreen({ navigation }: Props) {
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
+        editable={!loading}
       />
 
       <TextInput
@@ -69,10 +70,11 @@ export default function LoginScreen({ navigation }: Props) {
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+        editable={!loading}
       />
 
       <TouchableOpacity
-        style={styles.button}
+        style={[styles.button, loading && styles.disabledButton]}
         onPress={handleLogin}
         disabled={loading}
       >
@@ -80,6 +82,13 @@ export default function LoginScreen({ navigation }: Props) {
           {loading ? "Entrando..." : "Entrar"}
         </Text>
       </TouchableOpacity>
+
+      <View style={styles.registerContainer}>
+        <Text style={styles.registerText}>Não tem uma conta? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+          <Text style={styles.registerLink}>Cadastre-se</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -95,8 +104,14 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 40,
+    marginBottom: 10,
     color: "#333",
+  },
+  subtitle: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 40,
+    color: "#666",
   },
   input: {
     backgroundColor: "white",
@@ -105,16 +120,35 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderWidth: 1,
     borderColor: "#ddd",
+    fontSize: 16,
   },
   button: {
     backgroundColor: "#007AFF",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
+    marginBottom: 20,
+  },
+  disabledButton: {
+    backgroundColor: "#ccc",
   },
   buttonText: {
     color: "white",
     fontSize: 16,
+    fontWeight: "bold",
+  },
+  registerContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  registerText: {
+    fontSize: 14,
+    color: "#666",
+  },
+  registerLink: {
+    fontSize: 14,
+    color: "#007AFF",
     fontWeight: "bold",
   },
 });

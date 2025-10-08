@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Flashcard, User } from '../types';
+import { Flashcard } from '../types';
 
 // Interfaces para as respostas da API JSONPlaceholder
 interface Post {
@@ -7,14 +7,6 @@ interface Post {
     title: string;
     body: string;
     userId: number;
-}
-
-interface ApiUser {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-    website: string;
 }
 
 // Configuração base do axios
@@ -53,7 +45,6 @@ api.interceptors.response.use(
         // Se for erro de CORS, usar mock data
         if (error.code === 'NETWORK_ERROR' || error.message.includes('CORS')) {
             console.log('Erro de CORS detectado, usando dados mock...');
-            // Retornamos um objeto simulado que será tratado nos serviços
             throw new Error('CORS_ERROR');
         }
 
@@ -61,7 +52,7 @@ api.interceptors.response.use(
     }
 );
 
-// Dados mock para fallback
+// Dados mock para fallback - AUMENTADOS para mais variedade
 const mockFlashcards: Flashcard[] = [
     {
         id: '1',
@@ -79,61 +70,88 @@ const mockFlashcards: Flashcard[] = [
     },
     {
         id: '3',
+        question: 'Qual é a fórmula de Bhaskara?',
+        answer: 'x = [-b ± √(b² - 4ac)] / 2a',
+        category: 'math',
+        difficulty: 'hard'
+    },
+    {
+        id: '4',
         question: 'Qual é a capital do Brasil?',
         answer: 'Brasília',
         category: 'geography',
         difficulty: 'medium'
     },
     {
-        id: '4',
+        id: '5',
+        question: 'Qual o maior país do mundo em área territorial?',
+        answer: 'Rússia',
+        category: 'geography',
+        difficulty: 'medium'
+    },
+    {
+        id: '6',
         question: 'Quem escreveu "Dom Casmurro"?',
         answer: 'Machado de Assis',
         category: 'literature',
         difficulty: 'medium'
     },
     {
-        id: '5',
+        id: '7',
         question: 'Qual é o elemento químico O?',
         answer: 'Oxigênio',
         category: 'science',
         difficulty: 'easy'
     },
     {
-        id: '6',
+        id: '8',
+        question: 'O que é fotossíntese?',
+        answer: 'Processo pelo qual plantas convertem luz solar em energia',
+        category: 'science',
+        difficulty: 'medium'
+    },
+    {
+        id: '9',
         question: 'Em que ano o homem pisou na Lua?',
         answer: '1969',
         category: 'history',
         difficulty: 'hard'
+    },
+    {
+        id: '10',
+        question: 'Quem foi o primeiro presidente do Brasil?',
+        answer: 'Marechal Deodoro da Fonseca',
+        category: 'history',
+        difficulty: 'medium'
+    },
+    {
+        id: '11',
+        question: 'Qual é o plural de "cidadão"?',
+        answer: 'Cidadãos',
+        category: 'literature',
+        difficulty: 'easy'
+    },
+    {
+        id: '12',
+        question: 'O que é uma metáfora?',
+        answer: 'Figura de linguagem que compara duas coisas sem usar "como" ou "tal qual"',
+        category: 'literature',
+        difficulty: 'hard'
     }
 ];
-
-const mockUser: User = {
-    id: '1',
-    name: 'João Silva',
-    email: 'joao@exemplo.com'
-};
 
 // Função auxiliar para converter Posts da API em Flashcards
 function convertToFlashcards(posts: Post[]): Flashcard[] {
     const categories = ['math', 'science', 'history', 'geography', 'literature'];
     const difficulties: ('easy' | 'medium' | 'hard')[] = ['easy', 'medium', 'hard'];
 
-    return posts.slice(0, 6).map((post, index) => ({
-        id: post.id.toString(),
-        question: post.title,
-        answer: post.body.substring(0, 50) + '...',
+    return posts.slice(0, 12).map((post, index) => ({
+        id: (post.id + 100).toString(), // +100 para não conflitar com IDs dos mocks
+        question: `[API] ${post.title}`,
+        answer: `[API] ${post.body.substring(0, 60)}...`,
         category: categories[index % categories.length],
         difficulty: difficulties[index % difficulties.length]
     }));
-}
-
-// Função auxiliar para converter ApiUser em User
-function convertToUser(apiUser: ApiUser): User {
-    return {
-        id: apiUser.id.toString(),
-        name: apiUser.name,
-        email: apiUser.email
-    };
 }
 
 // Função para detectar se estamos no ambiente web
@@ -141,13 +159,13 @@ const isWeb = (): boolean => {
     return typeof document !== 'undefined';
 };
 
-// Serviço para flashcards
+// Serviço para flashcards - AGORA APENAS FLASHCARDS
 export const flashcardService = {
     async getFlashcards(): Promise<Flashcard[]> {
         // No ambiente web, sempre use mock data para evitar CORS
         if (isWeb()) {
             console.log('Ambiente web detectado, usando dados mock...');
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 800));
             return mockFlashcards;
         }
 
@@ -155,14 +173,16 @@ export const flashcardService = {
         try {
             console.log('Tentando API real no mobile...');
 
-            // ESPECIFICANDO O TIPO DA RESPOSTA - Isso resolve o erro TypeScript!
+            // ESPECIFICANDO O TIPO DA RESPOSTA
             const response = await api.get<Post[]>('/posts');
 
             // Agora response.data é do tipo Post[] (não mais unknown)
             const convertedFlashcards = convertToFlashcards(response.data);
             console.log('Dados convertidos da API:', convertedFlashcards.length, 'flashcards');
 
-            return convertedFlashcards;
+            // Combinar dados da API com mocks para ter mais variedade
+            const allFlashcards = [...mockFlashcards, ...convertedFlashcards];
+            return allFlashcards;
         } catch (error: any) {
             if (error.message === 'CORS_ERROR') {
                 console.log('CORS bloqueado, usando dados mock...');
@@ -171,7 +191,7 @@ export const flashcardService = {
             }
 
             // Fallback para dados mock
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 800));
             return mockFlashcards;
         }
     },
@@ -179,50 +199,49 @@ export const flashcardService = {
     async getFlashcardsByCategory(category: string): Promise<Flashcard[]> {
         try {
             const allFlashcards = await flashcardService.getFlashcards();
-            return allFlashcards.filter(card => card.category === category);
+            const filtered = allFlashcards.filter(card =>
+                category === 'all' || card.category === category
+            );
+            console.log(`Filtrados ${filtered.length} flashcards para categoria: ${category}`);
+            return filtered;
         } catch (error) {
             console.log('Erro ao filtrar por categoria, usando mock...');
             await new Promise(resolve => setTimeout(resolve, 500));
-            return mockFlashcards.filter(card => card.category === category);
+            return mockFlashcards.filter(card =>
+                category === 'all' || card.category === category
+            );
         }
+    },
+
+    // NOVO: Buscar flashcards por dificuldade
+    async getFlashcardsByDifficulty(difficulty: 'easy' | 'medium' | 'hard'): Promise<Flashcard[]> {
+        const allFlashcards = await flashcardService.getFlashcards();
+        return allFlashcards.filter(card => card.difficulty === difficulty);
+    },
+
+    // NOVO: Buscar estatísticas
+    async getFlashcardsStats() {
+        const allFlashcards = await flashcardService.getFlashcards();
+
+        const total = allFlashcards.length;
+        const byCategory = allFlashcards.reduce((acc, card) => {
+            acc[card.category] = (acc[card.category] || 0) + 1;
+            return acc;
+        }, {} as Record<string, number>);
+
+        const byDifficulty = allFlashcards.reduce((acc, card) => {
+            acc[card.difficulty] = (acc[card.difficulty] || 0) + 1;
+            return acc;
+        }, {} as Record<string, number>);
+
+        return {
+            total,
+            byCategory,
+            byDifficulty,
+        };
     },
 };
 
-// Serviço para autenticação
-export const authService = {
-    async login(email: string, password: string): Promise<User> {
-        try {
-            // JSONPlaceholder não tem autenticação real, então simulamos
-            console.log('Tentando autenticar via API...');
-
-            // Primeiro teste de conexão - ESPECIFICANDO O TIPO
-            await api.get<Post[]>('/posts');
-
-            // Buscar usuário da API - ESPECIFICANDO O TIPO
-            const response = await api.get<ApiUser>('/users/1');
-
-            // Agora response.data é do tipo ApiUser (não mais unknown)
-            const convertedUser = convertToUser(response.data);
-            console.log('Usuário da API:', convertedUser);
-
-            return convertedUser;
-        } catch (error: any) {
-            if (error.message === 'CORS_ERROR') {
-                console.log('CORS bloqueado na autenticação, usando mock...');
-            } else {
-                console.log('Erro na autenticação, usando mock:', error.message);
-            }
-
-            // Fallback para mock
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            if (email && password) {
-                return mockUser;
-            }
-
-            throw new Error('Email ou senha inválidos');
-        }
-    },
-};
+// O serviço de autenticação está em src/services/authService.ts
 
 export default api;

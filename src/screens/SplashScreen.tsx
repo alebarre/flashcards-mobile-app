@@ -21,13 +21,13 @@ export default function SplashScreen({ navigation }: Props) {
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 1000,
+        duration: 500,
         easing: Easing.ease,
         useNativeDriver: true,
       }),
       Animated.timing(scaleAnim, {
         toValue: 1,
-        duration: 1000,
+        duration: 500,
         easing: Easing.ease,
         useNativeDriver: true,
       }),

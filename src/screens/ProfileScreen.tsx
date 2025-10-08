@@ -10,6 +10,7 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useApp } from "../context/AppContext";
 import { RootStackParamList } from "../navigation/AppNavigator";
+import { authService } from "../services/authService";
 
 type ProfileScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -24,7 +25,7 @@ export default function ProfileScreen({ navigation }: Props) {
   const { state, dispatch } = useApp();
 
   const handleLogout = () => {
-    Alert.alert("Sair", "Tem certeza que deseja sair?", [
+    Alert.alert("Sair", "Tem certeza que deseja sair da sua conta?", [
       {
         text: "Cancelar",
         style: "cancel",
@@ -32,7 +33,8 @@ export default function ProfileScreen({ navigation }: Props) {
       {
         text: "Sair",
         style: "destructive",
-        onPress: () => {
+        onPress: async () => {
+          await authService.logout();
           dispatch({ type: "LOGOUT" });
           navigation.reset({
             index: 0,
