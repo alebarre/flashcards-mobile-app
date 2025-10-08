@@ -57,36 +57,36 @@ O Flashcards Edu é um aplicativo mobile que permite aos usuários estudar atrav
 
 ## 🚀 Funcionalidades
 
-### **🔐 Sistema de Autenticação**
+### ** Sistema de Autenticação**
 
-- ✅ Cadastro de novos usuários com validação
-- ✅ Login seguro com persistência de sessão
-- ✅ Logout com confirmação
-- ✅ Dados armazenados localmente
+-  Cadastro de novos usuários com validação
+-  Login seguro com persistência de sessão
+-  Logout com confirmação
+-  Dados armazenados localmente
 
-### **🎴 Sistema de Flashcards**
+### ** Sistema de Flashcards**
 
-- ✅ **6 Categorias**: Matemática, Ciências, História, Geografia, Literatura, Todos
-- ✅ **3 Níveis de Dificuldade**: Fácil, Médio, Difícil
-- ✅ Navegação intuitiva entre cards
-- ✅ Interface flip (pergunta/resposta)
-- ✅ Barra de progresso visual
-- ✅ Navegação automática após conclusão
+-  **6 Categorias**: Matemática, Ciências, História, Geografia, Literatura, Todos
+-  **3 Níveis de Dificuldade**: Fácil, Médio, Difícil
+-  Navegação intuitiva entre cards
+-  Interface flip (pergunta/resposta)
+-  Barra de progresso visual
+-  Navegação automática após conclusão
 
-### **📊 Estatísticas e Progresso**
+### ** Estatísticas e Progresso**
 
-- ✅ Contagem de flashcards por categoria
-- ✅ Progresso geral de aprendizado
-- ✅ Estatísticas detalhadas no perfil
-- ✅ Visualização de dados de uso
+-  Contagem de flashcards por categoria
+-  Progresso geral de aprendizado
+-  Estatísticas detalhadas no perfil
+-  Visualização de dados de uso
 
 ### **🎨 Experiência do Usuário**
 
-- ✅ Splash screen animada (3 segundos)
-- ✅ Navegação fluida entre telas
-- ✅ Confirmação de saída do app
-- ✅ Feedback visual para todas as ações
-- ✅ Design responsivo e moderno
+-  Splash screen animada (3 segundos)
+-  Navegação fluida entre telas
+-  Confirmação de saída do app
+-  Feedback visual para todas as ações
+-  Design responsivo e moderno
 
 ## ⚙️ Instalação e Configuração
 
@@ -97,7 +97,7 @@ O Flashcards Edu é um aplicativo mobile que permite aos usuários estudar atrav
 - Expo CLI
 - Dispositivo mobile ou emulador
 
-### **🚀 Começando**
+### ** Começando**
 
 1. **Clone e instale**
 
@@ -106,5 +106,6 @@ git clone https://github.com/seu-usuario/flashcards-edu.git
 cd flashcards-edu
 npm install
 ```
+
 
 
