@@ -10,30 +10,30 @@ O Flashcards Edu é um aplicativo mobile que permite aos usuários estudar atrav
 
 ## 🏗️ Estrutura do Projeto
 
-FlashcardsApp/
-├── src/
-│ ├── components/
-│ ├── screens/
-│ │ ├── SplashScreen.tsx
-│ │ ├── LoginScreen.tsx
-│ │ ├── RegisterScreen.tsx
-│ │ ├── HomeScreen.tsx
-│ │ ├── FlashcardsScreen.tsx
-│ │ └── ProfileScreen.tsx
-│ ├── context/
-│ │ └── AppContext.tsx
-│ ├── navigation/
-│ │ └── AppNavigator.tsx
-│ ├── services/
-│ │ ├── api.ts
-│ │ └── authService.ts
-│ └── types/
-│ └── index.ts
-├── assets/
-├── App.tsx
-├── app.json
-├── package.json
-└── tsconfig.json
+- FlashcardsApp
+- ├── src/
+- │ ├── components/
+- │ ├── screens/
+- │ │ ├── SplashScreen.tsx
+- │ │ ├── LoginScreen.tsx
+- │ │ ├── RegisterScreen.tsx
+- │ │ ├── HomeScreen.tsx
+- │ │ ├── FlashcardsScreen.tsx
+- │ │ └── ProfileScreen.tsx
+- │ ├── context/
+- │ │ └── AppContext.tsx
+- │ ├── navigation/
+- │ │ └── AppNavigator.tsx
+- │ ├── services/
+- │ │ ├── api.ts
+- │ │ └── authService.ts
+- │ └── types/
+- │ └── index.ts
+- ├── assets/
+- ├── App.tsx
+- ├── app.json
+- ├── package.json
+- └── tsconfig.json
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -106,4 +106,5 @@ git clone https://github.com/seu-usuario/flashcards-edu.git
 cd flashcards-edu
 npm install
 ```
+
 
